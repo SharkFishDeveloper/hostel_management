@@ -18,46 +18,47 @@ try {
     console.log("erro in connecting to db",error)
 }
 
-const createTAble = pool.query(
-    `
-    CREATE TABLE IF NOT EXISTS hostel_manage (
-        id SERIAL PRIMARY KEY,
-        roomNo INTEGER NOT NULL UNIQUE,
-        hostelName VARCHAR(255) NOT NULL,
-        student1 VARCHAR(255) NOT NULL UNIQUE,
-        student2 VARCHAR(255) UNIQUE
-    )
-    `,
-    (err, res) => {
-        if (err) {
-            console.error("Error creating hostel_manage table:", err);
-        } else {
-            console.log("Hostel table created successfully");
-        }
-    }
-);
-const createTAble2 = pool.query(
-    `
-    CREATE TABLE IF NOT EXISTS occupancy (
-        id SERIAL PRIMARY KEY,
-        roomNo INTEGER ,
-        hostelName VARCHAR(255) NOT NULL,
-        student1 VARCHAR(255) NOT NULL UNIQUE,
-        student2 VARCHAR(255) UNIQUE,
-        occupied INTEGER NOT NULL DEFAULT 0
-    )
-`
-,(err,res)=>{
-    if (err) {
-        console.error("Error creating occupancy table:", err);
-    } else {
-        console.log("Occupancy table created successfully");
-    }
-})
+// const createTAble = pool.query(
+//     `
+//     CREATE TABLE IF NOT EXISTS hostel_manage (
+//         id SERIAL PRIMARY KEY,
+//         roomNo INTEGER NOT NULL UNIQUE,
+//         hostelName VARCHAR(255) NOT NULL,
+//         student1 VARCHAR(255)  ,
+//         student2 VARCHAR(255) 
+//     )
+//     `,
+//     (err, res) => {
+//         if (err) {
+//             console.error("Error creating hostel_manage table:", err);
+//         } else {
+//             console.log("Hostel table created successfully");
+//         }
+//     }
+// );
+// const createTAble2 = pool.query(
+//     `
+//     CREATE TABLE IF NOT EXISTS occupancy (
+//         id SERIAL PRIMARY KEY,
+//         roomNo INTEGER ,
+//         hostelName VARCHAR(255) NOT NULL,
+//         student1 VARCHAR(255) ,
+//         student2 VARCHAR(255) ,
+//         occupied INTEGER NOT NULL DEFAULT 0
+//     )
+// `
+// ,(err,res)=>{
+//     if (err) {
+//         console.error("Error creating occupancy table:", err);
+//     } else {
+//         console.log("Occupancy table created successfully");
+//     }
+// })
 
 app.post("/book-room",async(req,res)=>{
     
     const {roomNo,hostelName,username} = req.body;
+    console.log(roomNo,hostelName,username)
     try {
         // Check if the room is already occupied
         const checkOccupancyQuery = `
@@ -131,9 +132,10 @@ app.post("/book-room",async(req,res)=>{
     
 })
 
-app.get("/hostel-rooms",async(req,res)=>{
+app.post("/hostel-rooms",async(req,res)=>{
     const {hostelName,occupied} = req.body;
-    
+   
+    console.log(hostelName,occupied)
 
     try {
         if(occupied==null){
@@ -150,7 +152,7 @@ app.get("/hostel-rooms",async(req,res)=>{
             }
        
     } catch (error) {
-        return res.status(400).json({message:err})
+        return res.status(400).json({message:error})
     }
 })
 
