@@ -21,6 +21,9 @@ const Allocations = () => {
             setStatus(false);
             setLoading(true);
             try {
+              if(hostelName !== "J" && hostelName !== "E" && hostelName !== "B" && hostelName !== "O") {
+                alert("Enter the right hostel");
+            }
                resp = await axios.post(`${BACKEND_URL}/book-room`,{roomNo,hostelName,username});
               console.log(resp.data);
             //   alert(resp.data.message);
